@@ -89,10 +89,10 @@ def handle_output(frame, output, threshold_prob, input_shape):
 	
 	for l in range(len(output)):
 		if output[l][2] > threshold_prob:
-			x_min = int(output[l][3]*input_shape[0])
-			y_min = int(output[l][4]*input_shape[1])
-			x_max = int(output[l][5]*input_shape[0])
-			y_max = int(output[l][6]*input_shape[1])
+			x_min = int(output[l][3]*input_shape[1])
+			y_min = int(output[l][4]*input_shape[0])
+			x_max = int(output[l][5]*input_shape[1])
+			y_max = int(output[l][6]*input_shape[0])
 			cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 0, 255), 1)
 			current_count = current_count + 1
 	
@@ -151,6 +151,9 @@ def infer_on_stream(args, client):
 
 		### TODO: Pre-process the image as needed ###
 		image = preprocessing(frame, h, w)
+		
+		print(frame.shape)
+		print(cap.get(3), cap.get(4))
 
 		### TODO: Start asynchronous inference for specified request ###
 		start_time = time.time()

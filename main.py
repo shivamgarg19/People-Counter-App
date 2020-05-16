@@ -117,6 +117,8 @@ def infer_on_stream(args, client):
 	last_time = 0
 	total_count = 0
 	last_count = 0
+	count_increase = 0
+	count_decrease = 0
 	single_image_mode = False
 	
 	# Load the model through `infer_network` #
@@ -152,8 +154,6 @@ def infer_on_stream(args, client):
 
 		# Pre-process the image as needed #
 		image = preprocessing(frame, h, w)
-		
-		
 
 		# Start asynchronous inference for specified request #
 		infer_network.exec_net(current_request_id, image)
@@ -171,17 +171,30 @@ def infer_on_stream(args, client):
 			# current_count, total_count and duration to the MQTT server #
 			# Topic "person": keys of "count" and "total" #
 			# Topic "person/duration": key of "duration" #
+			# Increase person count only when model detect it in consecutive 3 frame to avoid false count(Happens because of detection error by model).
 			if current_count > last_count:
-				start_time = time.time()
-				total_count = total_count + current_count - last_count
-				client.publish("person", json.dumps({"total": total_count}))
+				count_increase = count_increase + 1
+				count_decrease = 0
+				if count_increase > 3:
+					start_time = time.time()
+					total_count = total_count + current_count - last_count
+					client.publish("person", json.dumps({"total": total_count}))
+					last_count = current_count
 				
-			elif current_count < last_count: 
-				duration = int(time.time() - start_time)
-				client.publish("person/duration", json.dumps({"duration": duration}))
+			elif current_count < last_count:
+				count_decrease = count_decrease + 1
+				count_increase = 0
+				if count_decrease > 3:
+					duration = int(time.time() - start_time)
+					client.publish("person/duration", json.dumps({"duration": duration}))
+					last_count = current_count
 				
-			client.publish("person", json.dumps({"count": current_count}))
-			last_count = current_count
+			else:
+				count_increase = 0
+				count_decrease = 0
+				
+			client.publish("person", json.dumps({"count": last_count}))
+			
 			
 			if key_pressed == 27:
 				break

@@ -13,13 +13,23 @@ Some of the potential reasons for handling custom layers are...
 ## Comparing Model Performance
 
 My method(s) to compare models before and after conversion to Intermediate Representations
-were...
+were Model Size, Model Inference, Model Accuracy
 
-The difference between model accuracy pre- and post-conversion was...
+### Model Size
 
-The size of the model pre- and post-conversion was...
+| Model | Before Conversion | After Conversion |
+| ------ | ------ | ------ |
+| SSD Resnet 50 | 358MB | 200MB |
+| SSD MobileNet v1 | 74.7MB | 26.5MB |
+| SSD MobileNet v2 | 183MB | 65MB |
 
-The inference time of the model pre- and post-conversion was...
+### Inference Time
+
+| Model | Before Conversion | After Conversion |
+| ------ | ------ | ------ |
+| SSD Resnet 50 | 76ms | 1.6s |
+| SSD MobileNet v1 | 30ms | 50ms |
+| SSD MobileNet v2 | 31ms | 55ms |
 
 ## Assess Model Use Cases
 

@@ -28,7 +28,7 @@ You will choose a model to use and convert it with the Model Optimizer.
 
 ### Software
 
-*   Intel® Distribution of OpenVINO™ toolkit 2019 R3 release
+*   Intel® Distribution of OpenVINO™ toolkit 2020.3 release
 *   Node v6.17.1
 *   Npm v3.10.10
 *   CMake
@@ -87,9 +87,9 @@ From the main directory:
 
 It is up to you to decide on what model to use for the application. You need to find a model not already converted to Intermediate Representation format (i.e. not one of the Intel® Pre-Trained Models), convert it, and utilize the converted model in your application.
 
-Note that you may need to do additional processing of the output to handle incorrect detections, such as adjusting confidence threshold or accounting for 1-2 frames where the model fails to see a person already counted and would otherwise double count.
+Here are some of the model that i researched :- https://github.com/shivamgarg19/People-Counter-App/blob/master/WRITEUP.md
 
-**If you are otherwise unable to find a suitable model after attempting and successfully converting at least three other models**, you can document in your write-up what the models were, how you converted them, and why they failed, and then utilize any of the Intel® Pre-Trained Models that may perform better.
+Note that you may need to do additional processing of the output to handle incorrect detections, such as adjusting confidence threshold or accounting for 1-2 frames where the model fails to see a person already counted and would otherwise double count.
 
 ## Run the application
 
@@ -183,20 +183,3 @@ To see the output on a web based interface, open the link [http://0.0.0.0:3004](
 **Note:**
 User has to give `-video_size` command line argument according to the input as it is used to specify the resolution of the video or image file.
 
-## A Note on Running Locally
-
-The servers herein are configured to utilize the Udacity classroom workspace. As such,
-to run on your local machine, you will need to change the below file:
-
-```
-webservice/ui/src/constants/constants.js
-```
-
-The `CAMERA_FEED_SERVER` and `MQTT_SERVER` both use the workspace configuration. 
-You can change each of these as follows:
-
-```
-CAMERA_FEED_SERVER: "http://localhost:3004"
-...
-MQTT_SERVER: "ws://localhost:3002"
-```
